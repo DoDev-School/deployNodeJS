@@ -45,7 +45,7 @@ app.get("/teste/:nome/:senha", async (req, res) => {
 })
 
 app.get("/", (req, res) => {
-    console.log("MUDEI O TEXTO")
+    console.log("Bateu na API")
     res.send("Bem vindo")
 })
 
