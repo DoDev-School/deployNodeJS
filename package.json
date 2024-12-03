@@ -4,5 +4,8 @@
     "pg": "^8.13.1",
     "sequelize": "^6.37.5"
   },
+  "scripts": {
+    "start": "node index.js"
+  },
   "type": "module"
 }
