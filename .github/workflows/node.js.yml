@@ -45,7 +45,8 @@ jobs:
         key: ${{ secrets.AWS_EC2_SSH_PRIVATE_KEY }}
         username: ${{ secrets.EC2_REMOTE_USER }}
         script: |
+          sudo su -
           cd nodejs/
-          npm i
+          sudo npm i
           pm2 start index.js
           pm2 restart all
