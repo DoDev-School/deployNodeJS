@@ -21,13 +21,15 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - name: Use Node.js ${{ matrix.node-version }}
+      name: Use Node.js ${{ matrix.node-version }}
+
     - uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+
     - uses: easingthemes/ssh-deploy@main
-    - name: "Deploy to EC2"
+      name: "Deploy to EC2"
       with:
         SSH_PRIVATE_KEY: ${{ secrets.AWS_EC2_SSH_PRIVATE_KEY }}
         REMOTE_HOST: ${{ secrets.AWS_EC2_REMOTE_HOST }}
@@ -37,7 +39,7 @@ jobs:
         EXCLUDE: "/dist/, /node_modules/"
         
     - name: Execute remote ssh commands
-    - uses: appleboy/ssh-action@master
+      uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.AWS_EC2_REMOTE_HOST }}
         key: ${{ secrets.AWS_EC2_SSH_PRIVATE_KEY }}
