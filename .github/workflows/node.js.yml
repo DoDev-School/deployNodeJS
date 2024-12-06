@@ -26,5 +26,25 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: npm install
-    - run: git pull origin master
+    - uses: easingthemes/ssh-deploy@main
+    - name: "Deploy to EC2"
+      with:
+        SSH_PRIVATE_KEY: ${{ secrets.AWS_EC2_SSH_PRIVATE_KEY }}
+        REMOTE_HOST: ${{ secrets.AWS_EC2_REMOTE_HOST }}
+        REMOTE_USER: ${{ secrets.EC2_REMOTE_USER }}
+        TARGET: "/home/${{ secrets.EC2_REMOTE_USER }}/nodejs"
+        ARGS: "-rlgoDzvc -i --delete"
+        EXCLUDE: "/dist/, /node_modules/"
+        
+    - name: Execute remote ssh commands
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.AWS_EC2_REMOTE_HOST }}
+        key: ${{ secrets.AWS_EC2_SSH_PRIVATE_KEY }}
+        username: ${{ secrets.EC2_REMOTE_USER }}
+        script: |
+          cd nodejs/
+          npm i
+          npm install
+          pm2 start index.js
+          pm2 restart all

@@ -2,6 +2,7 @@
   "dependencies": {
     "express": "^4.21.1",
     "pg": "^8.13.1",
+    "pm2": "^5.4.3",
     "sequelize": "^6.37.5"
   },
   "scripts": {
