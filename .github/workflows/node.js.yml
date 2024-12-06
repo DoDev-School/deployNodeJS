@@ -28,15 +28,15 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
 
-    # - uses: easingthemes/ssh-deploy@main
-    #   name: "Deploy to EC2"
-    #   with:
-    #     SSH_PRIVATE_KEY: ${{ secrets.AWS_EC2_SSH_PRIVATE_KEY }}
-    #     REMOTE_HOST: ${{ secrets.AWS_EC2_REMOTE_HOST }}
-    #     REMOTE_USER: ${{ secrets.EC2_REMOTE_USER }}
-    #     TARGET: "/home/${{ secrets.EC2_REMOTE_USER }}/nodejs"
-    #     ARGS: "-rlgoDzvc -i --delete"
-    #     EXCLUDE: "/dist/, /node_modules/"
+    - uses: easingthemes/ssh-deploy@main
+      name: "Deploy to EC2"
+      with:
+        SSH_PRIVATE_KEY: ${{ secrets.AWS_EC2_SSH_PRIVATE_KEY }}
+        REMOTE_HOST: ${{ secrets.AWS_EC2_REMOTE_HOST }}
+        REMOTE_USER: ${{ secrets.EC2_REMOTE_USER }}
+        TARGET: "/home/${{ secrets.EC2_REMOTE_USER }}/nodejs"
+        ARGS: "-rlgoDzvc -i --delete"
+        EXCLUDE: "/dist/, /node_modules/"
         
     - name: Execute remote ssh commands
       uses: appleboy/ssh-action@master
@@ -45,8 +45,7 @@ jobs:
         key: ${{ secrets.AWS_EC2_SSH_PRIVATE_KEY }}
         username: ${{ secrets.EC2_REMOTE_USER }}
         script: |
-          rm -rf nodejs/
-          git clone https://github.com/DoDev-School/deployNodeJS.git nodejs/
+          sudo su -
           cd nodejs/
           npm i
           npm install
